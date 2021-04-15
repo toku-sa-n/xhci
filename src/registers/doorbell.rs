@@ -46,8 +46,9 @@ impl Register {
     }
 
     /// Set a doorbell target.
-    pub fn set_doorbell_target(&mut self, target: u8) {
+    pub fn set_doorbell_target(&mut self, target: u8) -> &mut Self {
         self.0.set_bits(0..=7, target.into());
+        self
     }
 
     /// Get a Doorbell Stream ID.
@@ -57,8 +58,9 @@ impl Register {
     }
 
     /// Set a Doorbell Stream ID.
-    pub fn set_doorbell_stream_id(&mut self, id: u16) {
+    pub fn set_doorbell_stream_id(&mut self, id: u16) -> &mut Self {
         self.0.set_bits(16..=31, id.into());
+        self
     }
 }
 impl fmt::Debug for Register {
