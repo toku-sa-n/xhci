@@ -1,6 +1,8 @@
 # Changelog
 
 ## Unreleased - ReleaseDate
+### Changed
+- The setters of `doorbell::Register` now return mutable references to `Self`.
 
 ## 0.5.5 - 2021-04-15
 ### Added
