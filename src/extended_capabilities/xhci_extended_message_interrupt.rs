@@ -3,8 +3,6 @@
 use super::ExtendedCapability;
 use accessor::Mapper;
 use accessor::Single;
-use bit_field::BitField;
-use core::convert::TryInto;
 
 /// xHCI Extended Message Interrupt Capability.
 #[repr(C)]
@@ -34,12 +32,7 @@ where
 pub struct MessageControl(u16);
 impl MessageControl {
     rw_bit!(15, msi_x_enable, "MSI-X Enable");
-
-    /// Returns the value of the Table Size field.
-    #[must_use]
-    pub fn table_size(self) -> u16 {
-        self.0.get_bits(0..=10)
-    }
+    ro_field!(0..=10, table_size, "Table Size", u16);
 }
 impl_debug_from_methods! {
     MessageControl {
@@ -59,11 +52,7 @@ impl TableOffset {
         self.0 & !0b111
     }
 
-    /// Returns the BIR value.
-    #[must_use]
-    pub fn bir(self) -> u8 {
-        self.0.get_bits(0..=2).try_into().unwrap()
-    }
+    ro_field!(0..=2, bir, "BIR", u8);
 }
 impl_debug_from_methods! {
     TableOffset {
