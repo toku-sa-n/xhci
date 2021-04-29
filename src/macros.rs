@@ -142,6 +142,12 @@ macro_rules! ro_field {
     };
 }
 
+macro_rules! wo_field {
+    ($range:expr,$method:ident,$name:literal,$ty:ty) => {
+        field_setter!($range, $method, $name, $ty);
+    };
+}
+
 macro_rules! rw_field {
     ($range:expr,$method:ident,$name:literal,$ty:ty) => {
         field_getter!($range, $method, $name, $ty);

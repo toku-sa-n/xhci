@@ -85,11 +85,12 @@ where
 #[derive(Copy, Clone)]
 pub struct Id(u32);
 impl Id {
-    /// Returns the value of the Debug Capability Event Ring Segment Table Max field.
-    #[must_use]
-    pub fn debug_capability_event_ring_segment_table_max(self) -> u8 {
-        self.0.get_bits(16..=20).try_into().unwrap()
-    }
+    ro_field!(
+        16..=20,
+        debug_capability_event_ring_segment_table_max,
+        "Debug Capability Event Ring Segment Table Max",
+        u8
+    );
 }
 impl_debug_from_methods! {
     Id {
@@ -102,10 +103,7 @@ impl_debug_from_methods! {
 #[derive(Copy, Clone, Debug)]
 pub struct Doorbell(u32);
 impl Doorbell {
-    /// Sets the value of the Doorbell Target field.
-    pub fn set_doorbell_target(&mut self, target: u8) {
-        self.0.set_bits(8..=15, target.into());
-    }
+    wo_field!(8..=15, doorbell_target, "Doorbell Target", u8);
 }
 
 /// Debug Capability Event Ring Segment Table Size Register.
@@ -166,16 +164,12 @@ impl_debug_from_methods! {
 #[derive(Copy, Clone)]
 pub struct EventRingDequeuePointer(u64);
 impl EventRingDequeuePointer {
-    /// Returns the value of the Dequeue ERST Segment Index field.
-    #[must_use]
-    pub fn dequeue_erst_segment_index(self) -> u8 {
-        self.0.get_bits(0..=2).try_into().unwrap()
-    }
-
-    /// Sets the value of the Dequeue ERST Segment Index field.
-    pub fn set_dequeue_erst_segment_index(&mut self, i: u8) {
-        self.0.set_bits(0..=2, i.into());
-    }
+    rw_field!(
+        0..=2,
+        dequeue_erst_segment_index,
+        "Dequeue ERST Segment Index",
+        u8
+    );
 
     /// Returns the value of the Dequeue Pointer field.
     #[must_use]
@@ -214,19 +208,8 @@ impl Control {
     rw1s_bit!(2, halt_out_tr, "Halt OUT TR");
     rw1s_bit!(3, halt_in_tr, "Halt IN TR");
     rw1c_bit!(4, dbc_run_change, "DbC Run Change");
-
-    /// Returns the value of the Debug Max Burst Size field.
-    #[must_use]
-    pub fn debug_max_burst_size(self) -> u8 {
-        self.0.get_bits(16..=23).try_into().unwrap()
-    }
-
-    /// Returns the value of the Device Address field.
-    #[must_use]
-    pub fn device_address(self) -> u8 {
-        self.0.get_bits(24..=30).try_into().unwrap()
-    }
-
+    ro_field!(16..=23, debug_max_burst_size, "Debug Max Burst Size", u8);
+    ro_field!(24..=30, device_address, "Device Address", u8);
     rw_bit!(31, debug_capability_enable, "Debug Capability Enable");
 }
 impl_debug_from_methods! {
@@ -249,12 +232,7 @@ pub struct Status(u32);
 impl Status {
     ro_bit!(0, event_ring_not_empty, "Event Ring Not Empty");
     ro_bit!(1, dbc_system_bus_reset, "DbC System Bus Reset");
-
-    /// Returns the value of the Debug Port Number field.
-    #[must_use]
-    pub fn debug_port_number(self) -> u8 {
-        self.0.get_bits(24..=31).try_into().unwrap()
-    }
+    ro_field!(24..=31, debug_port_number, "Debug Port Number", u8);
 }
 impl_debug_from_methods! {
     Status {
@@ -272,19 +250,8 @@ impl PortStatusAndControl {
     ro_bit!(0, current_connect_status, "Current Connect Status");
     rw_bit!(1, port_enabled_disabled, "Port Enabled/Disabled");
     ro_bit!(4, port_reset, "Port Reset");
-
-    /// Returns the value of the Port Link State field.
-    #[must_use]
-    pub fn port_link_state(self) -> u8 {
-        self.0.get_bits(5..=8).try_into().unwrap()
-    }
-
-    /// Returns the value of the Port Speed field.
-    #[must_use]
-    pub fn port_speed(self) -> u8 {
-        self.0.get_bits(10..=13).try_into().unwrap()
-    }
-
+    ro_field!(5..=8, port_link_state, "Port Link State", u8);
+    ro_field!(10..=13, port_speed, "Port Speed", u8);
     rw1c_bit!(17, connect_status_change, "Connect Status Change");
     rw1c_bit!(21, port_reset_change, "Port Reset Change");
     rw1c_bit!(22, port_link_status_change, "Port Link Status Change");
@@ -332,27 +299,8 @@ impl ContextPointer {
 #[derive(Copy, Clone)]
 pub struct DeviceDescriptorInfo1(u32);
 impl DeviceDescriptorInfo1 {
-    /// Returns the value of the DbC Protocol field.
-    #[must_use]
-    pub fn dbc_protocol(self) -> u8 {
-        self.0.get_bits(0..=7).try_into().unwrap()
-    }
-
-    /// Sets the value of the DbC Protocol field.
-    pub fn set_dbc_protocol(&mut self, protocol: u8) {
-        self.0.set_bits(0..=7, protocol.into());
-    }
-
-    /// Returns the value of the Vendor ID field.
-    #[must_use]
-    pub fn vendor_id(self) -> u16 {
-        self.0.get_bits(16..=31).try_into().unwrap()
-    }
-
-    /// Sets the value of the Vendor ID field.
-    pub fn set_vendor_id(&mut self, id: u16) {
-        self.0.set_bits(16..=31, id.into());
-    }
+    rw_field!(0..=7, dbc_protocol, "DbC Protocol", u8);
+    rw_field!(16..=31, vendor_id, "Vendor ID", u16);
 }
 impl_debug_from_methods! {
     DeviceDescriptorInfo1 {
@@ -366,27 +314,8 @@ impl_debug_from_methods! {
 #[derive(Copy, Clone)]
 pub struct DeviceDescriptorInfo2(u32);
 impl DeviceDescriptorInfo2 {
-    /// Returns the value of the Product ID field.
-    #[must_use]
-    pub fn product_id(self) -> u16 {
-        self.0.get_bits(0..=15).try_into().unwrap()
-    }
-
-    /// Sets the value of the Product ID field.
-    pub fn set_product_id(&mut self, id: u16) {
-        self.0.set_bits(0..=15, id.into());
-    }
-
-    /// Returns the value of the Device Revision field.
-    #[must_use]
-    pub fn device_revision(self) -> u16 {
-        self.0.get_bits(16..=31).try_into().unwrap()
-    }
-
-    /// Sets the value of the Device Revision field.
-    pub fn set_device_revision(&mut self, revision: u16) {
-        self.0.set_bits(16..=31, revision.into());
-    }
+    rw_field!(0..=15, product_id, "Product ID", u16);
+    rw_field!(16..=31, device_revision, "Device Revision", u16);
 }
 impl_debug_from_methods! {
     DeviceDescriptorInfo2 {
