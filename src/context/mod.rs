@@ -123,17 +123,15 @@ impl<const N: usize> InputControl<N> {
         Self([0; N])
     }
 }
-impl<const N: usize> AsRef<[u32]> for InputControl<N> {
+impl<const N: usize> InputControlHandler for InputControl<N> {
     fn as_ref(&self) -> &[u32] {
         &self.0
     }
-}
-impl<const N: usize> AsMut<[u32]> for InputControl<N> {
+
     fn as_mut(&mut self) -> &mut [u32] {
         &mut self.0
     }
 }
-impl<const N: usize> InputControlHandler for InputControl<N> {}
 impl<const N: usize> fmt::Debug for InputControl<N> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.debug_struct("InputControl")
@@ -147,7 +145,12 @@ impl<const N: usize> fmt::Debug for InputControl<N> {
 }
 
 /// A trait to handle Input Control Context.
-pub trait InputControlHandler: AsRef<[u32]> + AsMut<[u32]> {
+pub trait InputControlHandler {
+    #[doc(hidden)]
+    fn as_ref(&self) -> &[u32];
+    #[doc(hidden)]
+    fn as_mut(&mut self) -> &mut [u32];
+
     /// Returns the `i`th Drop Context flag. `i` starts from 0.
     ///
     /// # Panics
@@ -322,17 +325,15 @@ impl<const N: usize> Slot<N> {
         Self([0; N])
     }
 }
-impl<const N: usize> AsRef<[u32]> for Slot<N> {
+impl<const N: usize> SlotHandler for Slot<N> {
     fn as_ref(&self) -> &[u32] {
         &self.0
     }
-}
-impl<const N: usize> AsMut<[u32]> for Slot<N> {
+
     fn as_mut(&mut self) -> &mut [u32] {
         &mut self.0
     }
 }
-impl<const N: usize> SlotHandler for Slot<N> {}
 impl_debug_from_methods_cx! {
     Slot {
         route_string,
@@ -353,7 +354,12 @@ impl_debug_from_methods_cx! {
 }
 
 /// A trait to handle Slot Context.
-pub trait SlotHandler: AsRef<[u32]> + AsMut<[u32]> {
+pub trait SlotHandler {
+    #[doc(hidden)]
+    fn as_ref(&self) -> &[u32];
+    #[doc(hidden)]
+    fn as_mut(&mut self) -> &mut [u32];
+
     rw_field_cx!([0](0..=19), route_string, "Route String", u32);
     rw_field_cx!([0](20..=23), speed, "Speed", u8);
     rw_bit_cx!([0](25), multi_tt, "Multi-TT");
@@ -405,17 +411,15 @@ impl<const N: usize> Endpoint<N> {
         Self([0; N])
     }
 }
-impl<const N: usize> AsRef<[u32]> for Endpoint<N> {
+impl<const N: usize> EndpointHandler for Endpoint<N> {
     fn as_ref(&self) -> &[u32] {
         &self.0
     }
-}
-impl<const N: usize> AsMut<[u32]> for Endpoint<N> {
+
     fn as_mut(&mut self) -> &mut [u32] {
         &mut self.0
     }
 }
-impl<const N: usize> EndpointHandler for Endpoint<N> {}
 impl_debug_from_methods_cx! {
     Endpoint {
         endpoint_state,
@@ -437,7 +441,12 @@ impl_debug_from_methods_cx! {
 }
 
 /// A trait to handle Endpoint Context.
-pub trait EndpointHandler: AsRef<[u32]> + AsMut<[u32]> {
+pub trait EndpointHandler {
+    #[doc(hidden)]
+    fn as_ref(&self) -> &[u32];
+    #[doc(hidden)]
+    fn as_mut(&mut self) -> &mut [u32];
+
     /// Returns Endpoint State.
     ///
     /// # Panics
